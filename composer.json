@@ -1,0 +1,14 @@
+{
+    "name": "course/app",
+    "description": "Application de gestion des seances de course de fond CM2",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+}

@@ -48,7 +48,7 @@ $seances = SeanceRepository::findByEleve($pdo, $eleveId);
         <tbody>
         <?php foreach ($seances as $seance): ?>
             <tr>
-                <td><?= htmlspecialchars($seance['date_seance']) ?></td>
+                <td><?= htmlspecialchars((new DateTimeImmutable($seance['date_seance']))->format('d-m-Y')) ?></td>
                 <td><?= $seance['longueur_tour_m'] !== null ? htmlspecialchars((string) $seance['longueur_tour_m']) . ' m' : '—' ?></td>
                 <td><?= (int) $seance['nb_temps'] ?></td>
                 <td><a class="bouton bouton-secondaire" href="/saisie/seance_form.php?id=<?= (int) $seance['id'] ?>">Modifier</a></td>

@@ -29,6 +29,7 @@ $authentifie = SiteAuth::check();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Course de fond CM2</title>
     <link rel="stylesheet" href="/assets/style.css">
+    <script src="/assets/app.js" defer></script>
 </head>
 <body>
 <?php if ($authentifie): ?>
@@ -45,5 +46,6 @@ $authentifie = SiteAuth::check();
         <button type="submit" class="bouton-large">Valider</button>
     </form>
 <?php endif; ?>
+<p><a href="/admin/login.php">Espace administrateur</a></p>
 </body>
 </html>

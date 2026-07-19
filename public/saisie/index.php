@@ -36,7 +36,7 @@ if (isset($_GET['classe_id'])) {
     $classeIdSelectionnee = (int) $_GET['classe_id'];
 } elseif ($classeCookie !== null && (int) $classeCookie['annee_debut'] === $anneeSelectionnee) {
     $classeIdSelectionnee = (int) $classeCookie['id'];
-} elseif (count($classes) === 1) {
+} elseif ($classes !== []) {
     $classeIdSelectionnee = (int) $classes[0]['id'];
 } else {
     $classeIdSelectionnee = null;

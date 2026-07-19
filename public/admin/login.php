@@ -33,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Administration — Course de fond CM2</title>
     <link rel="stylesheet" href="/assets/style.css">
+    <script src="/assets/app.js" defer></script>
 </head>
 <body>
 <h1>Administration</h1>

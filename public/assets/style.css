@@ -155,3 +155,22 @@ th, td {
     margin-bottom: 0;
     flex: 1 1 auto;
 }
+
+.champ-mdp {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.champ-mdp input[type="password"],
+.champ-mdp input[type="text"] {
+    margin-bottom: 0;
+    flex: 1 1 auto;
+}
+
+.bouton-oeil {
+    flex: 0 0 auto;
+    width: auto;
+    margin-top: 0;
+    padding: 0.5rem 0.9rem;
+}

@@ -32,12 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Administration — Course de fond CM2</title>
-    <style>
-        body { font-family: system-ui, sans-serif; max-width: 480px; margin: 3rem auto; padding: 0 1rem; }
-        input { font-size: 1.2rem; padding: 0.5rem; width: 100%; box-sizing: border-box; margin-bottom: 0.75rem; }
-        button { font-size: 1.2rem; padding: 0.75rem 1.5rem; width: 100%; }
-        .erreur { color: #b00020; }
-    </style>
+    <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
 <h1>Administration</h1>

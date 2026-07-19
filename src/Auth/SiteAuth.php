@@ -36,6 +36,12 @@ final class SiteAuth
         unset($_SESSION['site_authenticated']);
     }
 
+    public static function setPassword(PDO $pdo, string $nouveauMotDePasse): void
+    {
+        $stmt = $pdo->prepare('UPDATE parametres_site SET mot_de_passe_hash = ? WHERE id = 1');
+        $stmt->execute([password_hash($nouveauMotDePasse, PASSWORD_DEFAULT)]);
+    }
+
     public static function requireAuth(string $loginUrl = '/index.php'): void
     {
         if (!self::check()) {

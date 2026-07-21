@@ -6,6 +6,7 @@ use App\Auth\AdminAuth;
 use App\Auth\SiteAuth;
 use App\Config\Database;
 use App\Support\Csrf;
+use App\View\Layout;
 
 require __DIR__ . '/../../../config/bootstrap.php';
 
@@ -34,33 +35,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $succes = true;
     }
 }
+Layout::debut('Mot de passe site — Administration', ['admin' => true, 'adminNav' => 'pwSite', 'js' => '/assets/app.js']);
 ?>
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mot de passe site — Administration</title>
-    <link rel="stylesheet" href="/assets/style.css">
-    <script src="/assets/app.js" defer></script>
-</head>
-<body>
-<a class="retour" href="/admin/index.php">&larr; Tableau de bord</a>
-<h1>Changer le mot de passe "site"</h1>
-<p>Ce mot de passe protège l'accès à la saisie et aux exports pour les enseignants et élèves.</p>
+<h3 style="margin-bottom:2px">Mot de passe du site</h3>
+<p class="hint">Partagé par tous les enseignants et élèves pour ouvrir l'appli (saisie et exports).</p>
 <?php if ($succes): ?>
     <p class="succes">Mot de passe mis à jour.</p>
 <?php endif; ?>
 <?php foreach ($erreurs as $erreur): ?>
     <p class="erreur"><?= htmlspecialchars($erreur) ?></p>
 <?php endforeach; ?>
-<form method="post">
+<form method="post" style="max-width:320px">
     <?= Csrf::champHtml() ?>
-    <label for="nouveau_mot_de_passe">Nouveau mot de passe</label>
-    <input type="password" id="nouveau_mot_de_passe" name="nouveau_mot_de_passe" required autofocus>
-    <label for="confirmation">Confirmation</label>
-    <input type="password" id="confirmation" name="confirmation" required>
-    <button type="submit" class="bouton-large">Enregistrer</button>
+    <div class="field">
+        <label for="nouveau_mot_de_passe">Nouveau mot de passe</label>
+        <input type="password" id="nouveau_mot_de_passe" name="nouveau_mot_de_passe" required autofocus>
+    </div>
+    <div class="field">
+        <label for="confirmation">Confirmation</label>
+        <input type="password" id="confirmation" name="confirmation" required>
+    </div>
+    <button type="submit" class="btn-block">Enregistrer</button>
 </form>
-</body>
-</html>
+<?php Layout::fin(); ?>

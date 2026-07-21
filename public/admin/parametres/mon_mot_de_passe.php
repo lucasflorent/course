@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Auth\AdminAuth;
 use App\Config\Database;
 use App\Support\Csrf;
+use App\View\Layout;
 
 require __DIR__ . '/../../../config/bootstrap.php';
 
@@ -38,34 +39,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+Layout::debut('Mon mot de passe — Administration', ['admin' => true, 'adminNav' => 'pwAdmin', 'js' => '/assets/app.js']);
 ?>
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mon mot de passe — Administration</title>
-    <link rel="stylesheet" href="/assets/style.css">
-    <script src="/assets/app.js" defer></script>
-</head>
-<body>
-<a class="retour" href="/admin/index.php">&larr; Tableau de bord</a>
-<h1>Changer mon mot de passe administrateur</h1>
+<h3 style="margin-bottom:2px">Mot de passe administrateur</h3>
+<p class="hint">Réservé à l'administrateur général du site.</p>
 <?php if ($succes): ?>
     <p class="succes">Mot de passe mis à jour.</p>
 <?php endif; ?>
 <?php foreach ($erreurs as $erreur): ?>
     <p class="erreur"><?= htmlspecialchars($erreur) ?></p>
 <?php endforeach; ?>
-<form method="post">
+<form method="post" style="max-width:320px">
     <?= Csrf::champHtml() ?>
-    <label for="mot_de_passe_actuel">Mot de passe actuel</label>
-    <input type="password" id="mot_de_passe_actuel" name="mot_de_passe_actuel" required autofocus>
-    <label for="nouveau_mot_de_passe">Nouveau mot de passe</label>
-    <input type="password" id="nouveau_mot_de_passe" name="nouveau_mot_de_passe" required>
-    <label for="confirmation">Confirmation</label>
-    <input type="password" id="confirmation" name="confirmation" required>
-    <button type="submit" class="bouton-large">Enregistrer</button>
+    <div class="field">
+        <label for="mot_de_passe_actuel">Mot de passe actuel</label>
+        <input type="password" id="mot_de_passe_actuel" name="mot_de_passe_actuel" required autofocus>
+    </div>
+    <div class="field">
+        <label for="nouveau_mot_de_passe">Nouveau mot de passe</label>
+        <input type="password" id="nouveau_mot_de_passe" name="nouveau_mot_de_passe" required>
+    </div>
+    <div class="field">
+        <label for="confirmation">Confirmation</label>
+        <input type="password" id="confirmation" name="confirmation" required>
+    </div>
+    <button type="submit" class="btn-block">Enregistrer</button>
 </form>
-</body>
-</html>
+<?php Layout::fin(); ?>

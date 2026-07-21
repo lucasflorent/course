@@ -4,7 +4,9 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": ">=8.1"
+        "php": ">=8.1",
+        "ext-gd": "*",
+        "tecnickcom/tcpdf": "^6.6"
     },
     "autoload": {
         "psr-4": {

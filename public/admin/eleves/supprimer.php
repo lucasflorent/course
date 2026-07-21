@@ -6,6 +6,7 @@ use App\Auth\AdminAuth;
 use App\Config\Database;
 use App\Repository\EleveRepository;
 use App\Support\Csrf;
+use App\View\Layout;
 
 require __DIR__ . '/../../../config/bootstrap.php';
 
@@ -28,25 +29,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: /admin/eleves/index.php?classe_id=' . $classeId);
     exit;
 }
+Layout::debut('Supprimer un élève — Administration', ['admin' => true, 'adminNav' => 'students']);
 ?>
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Supprimer un élève — Administration</title>
-    <link rel="stylesheet" href="/assets/style.css">
-</head>
-<body>
 <a class="retour" href="/admin/eleves/index.php?classe_id=<?= $classeId ?>">&larr; Élèves</a>
-<h1>Supprimer l'élève ?</h1>
+<h3>Supprimer l'élève ?</h3>
 <p><strong><?= htmlspecialchars($eleve['prenom']) ?></strong></p>
 <p class="erreur">Cette action supprimera aussi définitivement ses séances et temps de passage.</p>
-<form method="post" class="actions">
+<form method="post" class="actions" style="max-width:380px">
     <?= Csrf::champHtml() ?>
     <input type="hidden" name="id" value="<?= $id ?>">
-    <button type="submit" class="bouton-danger">Supprimer définitivement</button>
-    <a class="bouton bouton-secondaire" href="/admin/eleves/index.php?classe_id=<?= $classeId ?>">Annuler</a>
+    <button type="submit" class="btn-danger">Supprimer définitivement</button>
+    <a class="btn btn-secondary" href="/admin/eleves/index.php?classe_id=<?= $classeId ?>">Annuler</a>
 </form>
-</body>
-</html>
+<?php Layout::fin(); ?>

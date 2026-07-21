@@ -8,6 +8,8 @@ use App\Csv\CsvPreview;
 use App\Repository\ClasseRepository;
 use App\Repository\EleveRepository;
 use App\Support\Csrf;
+use App\Support\Icone;
+use App\View\Layout;
 
 require __DIR__ . '/../../../config/bootstrap.php';
 
@@ -74,18 +76,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['etape'] ?? '') === 'confir
 }
 
 $apercus = $brut !== null ? CsvPreview::genererApercus($brut) : null;
+Layout::debut('Importer des élèves — Administration', ['admin' => true, 'adminNav' => 'students']);
 ?>
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Importer des élèves — Administration</title>
-    <link rel="stylesheet" href="/assets/style.css">
-</head>
-<body class="large">
 <a class="retour" href="/admin/eleves/index.php?classe_id=<?= $classeId ?>">&larr; Élèves</a>
-<h1>Importer des élèves — <?= htmlspecialchars($classe['enseignant']) ?></h1>
+<h3 style="margin-bottom:2px">Élèves &amp; import</h3>
+<p class="hint">Importer une liste de prénoms depuis un fichier CSV pour <?= htmlspecialchars($classe['enseignant']) ?>.</p>
 <?php if ($erreur): ?><p class="erreur"><?= htmlspecialchars($erreur) ?></p><?php endif; ?>
 
 <?php if ($apercus === null): ?>
@@ -93,9 +88,12 @@ $apercus = $brut !== null ? CsvPreview::genererApercus($brut) : null;
         <?= Csrf::champHtml() ?>
         <input type="hidden" name="etape" value="upload">
         <input type="hidden" name="classe_id" value="<?= $classeId ?>">
-        <label for="csv">Fichier CSV (liste des prénoms)</label>
-        <input type="file" id="csv" name="csv" accept=".csv,text/csv" required>
-        <button type="submit" class="bouton-large">Aperçu</button>
+        <div class="importbox">
+            <?= Icone::svg('upload-simple', 28) ?>
+            <div style="font-weight:500">Choisir un fichier CSV (liste des prénoms)</div>
+            <input type="file" id="csv" name="csv" accept=".csv,text/csv" required style="max-width:320px">
+        </div>
+        <button type="submit" class="btn-block">Aperçu</button>
     </form>
 <?php else: ?>
     <p>Choisissez la combinaison qui affiche correctement les prénoms (accents lisibles, colonnes cohérentes) :</p>
@@ -104,13 +102,13 @@ $apercus = $brut !== null ? CsvPreview::genererApercus($brut) : null;
         <input type="hidden" name="etape" value="confirmer">
         <input type="hidden" name="classe_id" value="<?= $classeId ?>">
 
-        <label><input type="checkbox" name="entete" value="1" checked> La première ligne est un en-tête (non importée)</label>
+        <label><input type="checkbox" name="entete" value="1" checked style="width:auto;min-height:0"> La première ligne est un en-tête (non importée)</label>
 
-        <div class="grille-apercu">
+        <div class="previewgrid">
             <?php foreach ($apercus as $cle => $apercu): ?>
-                <div class="carte<?= $apercu['valide'] ? '' : ' invalide' ?>">
+                <div class="carte pvopt<?= $apercu['valide'] ? '' : ' invalide' ?>">
                     <label>
-                        <input type="radio" name="config" value="<?= htmlspecialchars($cle) ?>"
+                        <input type="radio" name="config" value="<?= htmlspecialchars($cle) ?>" style="width:auto;min-height:0"
                             <?= $apercu['valide'] ? '' : 'disabled' ?>>
                         <strong><?= htmlspecialchars($apercu['label']) ?></strong>
                     </label>
@@ -142,8 +140,7 @@ $apercus = $brut !== null ? CsvPreview::genererApercus($brut) : null;
             <?php endforeach; ?>
         </div>
 
-        <button type="submit" class="bouton-large">Importer les élèves</button>
+        <button type="submit" class="btn-block">Importer les élèves</button>
     </form>
 <?php endif; ?>
-</body>
-</html>
+<?php Layout::fin(); ?>

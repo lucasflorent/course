@@ -45,4 +45,33 @@ final class TempsPassageRepository
             throw $e;
         }
     }
+
+    /**
+     * Ajoute un seul temps de passage (saisie au pave numerique, un tour a
+     * la fois). Le caller est responsable de verifier la stricte croissance
+     * par rapport aux temps deja enregistres.
+     */
+    public static function create(PDO $pdo, int $seanceId, int $tempsCumuleS, bool $incertain): int
+    {
+        $stmt = $pdo->prepare(
+            'INSERT INTO temps_passage (seance_id, temps_cumule_s, incertain) VALUES (?, ?, ?)'
+        );
+        $stmt->execute([$seanceId, $tempsCumuleS, $incertain ? 1 : 0]);
+
+        return (int) $pdo->lastInsertId();
+    }
+
+    public static function delete(PDO $pdo, int $id, int $seanceId): void
+    {
+        $stmt = $pdo->prepare('DELETE FROM temps_passage WHERE id = ? AND seance_id = ?');
+        $stmt->execute([$id, $seanceId]);
+    }
+
+    public static function updateIncertain(PDO $pdo, int $id, int $seanceId, bool $incertain): void
+    {
+        $stmt = $pdo->prepare(
+            'UPDATE temps_passage SET incertain = ? WHERE id = ? AND seance_id = ?'
+        );
+        $stmt->execute([$incertain ? 1 : 0, $id, $seanceId]);
+    }
 }

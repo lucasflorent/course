@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Auth\AdminAuth;
 use App\Config\Database;
+use App\Support\Icone;
+use App\View\Layout;
 
 require __DIR__ . '/../../config/bootstrap.php';
 
@@ -25,25 +27,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $erreur = 'Identifiant ou mot de passe incorrect.';
 }
+Layout::debut('Administration — Course de fond CM2', ['js' => '/assets/app.js']);
 ?>
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Administration — Course de fond CM2</title>
-    <link rel="stylesheet" href="/assets/style.css">
-    <script src="/assets/app.js" defer></script>
-</head>
-<body>
-<h1>Administration</h1>
+<div class="loginwrap">
+<div class="logincard">
+<img class="logo-mark" src="/assets/images/logo.png" alt="Logo de l'école">
+<h3>Espace administrateur</h3>
+<p>Identifiants distincts du mot de passe de la classe.</p>
 <?php if ($erreur): ?><p class="erreur"><?= htmlspecialchars($erreur) ?></p><?php endif; ?>
 <form method="post">
-    <label for="identifiant">Identifiant</label>
-    <input type="text" id="identifiant" name="identifiant" required autofocus>
-    <label for="mot_de_passe">Mot de passe</label>
-    <input type="password" id="mot_de_passe" name="mot_de_passe" required>
-    <button type="submit">Se connecter</button>
+    <div class="field">
+        <label for="identifiant">Identifiant</label>
+        <input type="text" id="identifiant" name="identifiant" required autofocus>
+    </div>
+    <div class="field">
+        <label for="mot_de_passe">Mot de passe</label>
+        <input type="password" id="mot_de_passe" name="mot_de_passe" required>
+    </div>
+    <button type="submit" class="btn-block">Se connecter</button>
 </form>
-</body>
-</html>
+<div class="adminlink"><a href="/index.php"><?= Icone::svg('arrow-left') ?>Retour à l'appli</a></div>
+</div>
+</div>
+<?php Layout::fin(); ?>

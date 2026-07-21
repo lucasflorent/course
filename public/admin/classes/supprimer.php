@@ -6,6 +6,7 @@ use App\Auth\AdminAuth;
 use App\Config\Database;
 use App\Repository\ClasseRepository;
 use App\Support\Csrf;
+use App\View\Layout;
 
 require __DIR__ . '/../../../config/bootstrap.php';
 
@@ -28,18 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $stats = ClasseRepository::statistiques($pdo, $id);
+Layout::debut('Supprimer une classe — Administration', ['admin' => true, 'adminNav' => 'teachers']);
 ?>
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Supprimer une classe — Administration</title>
-    <link rel="stylesheet" href="/assets/style.css">
-</head>
-<body>
 <a class="retour" href="/admin/classes/index.php">&larr; Classes</a>
-<h1>Supprimer la classe ?</h1>
+<h3>Supprimer la classe ?</h3>
 <p>
     <strong><?= htmlspecialchars($classe['enseignant']) ?></strong>
     — <?= (int) $classe['annee_debut'] ?>/<?= (int) $classe['annee_debut'] + 1 ?>
@@ -51,11 +44,10 @@ $stats = ClasseRepository::statistiques($pdo, $id);
     <?= (int) $stats['nb_seances'] ?> séance(s) et
     <?= (int) $stats['nb_temps'] ?> temps de passage associés.
 </p>
-<form method="post" class="actions">
+<form method="post" class="actions" style="max-width:380px">
     <?= Csrf::champHtml() ?>
     <input type="hidden" name="id" value="<?= (int) $classe['id'] ?>">
-    <button type="submit" class="bouton-danger">Supprimer définitivement</button>
-    <a class="bouton bouton-secondaire" href="/admin/classes/index.php">Annuler</a>
+    <button type="submit" class="btn-danger">Supprimer définitivement</button>
+    <a class="btn btn-secondary" href="/admin/classes/index.php">Annuler</a>
 </form>
-</body>
-</html>
+<?php Layout::fin(); ?>

@@ -19,6 +19,25 @@ final class ClasseRepository
         return $stmt->fetchAll();
     }
 
+    /**
+     * Comme findAll(), avec le nombre d'eleves par classe (LEFT JOIN +
+     * GROUP BY plutot qu'une requete par classe) — alimente le
+     * regroupement par enseignant de l'ecran d'administration.
+     */
+    public static function findAllAvecComptes(PDO $pdo): array
+    {
+        $stmt = $pdo->query(
+            'SELECT c.id, c.enseignant, c.annee_debut, c.libelle_classe, c.cree_le,
+                    COUNT(e.id) AS nb_eleves
+             FROM classes c
+             LEFT JOIN eleves e ON e.classe_id = c.id
+             GROUP BY c.id
+             ORDER BY c.annee_debut DESC, c.enseignant ASC'
+        );
+
+        return $stmt->fetchAll();
+    }
+
     public static function findById(PDO $pdo, int $id): ?array
     {
         $stmt = $pdo->prepare(
@@ -28,26 +47,6 @@ final class ClasseRepository
         $classe = $stmt->fetch();
 
         return $classe === false ? null : $classe;
-    }
-
-    public static function findByAnnee(PDO $pdo, int $anneeDebut): array
-    {
-        $stmt = $pdo->prepare(
-            'SELECT id, enseignant, annee_debut, libelle_classe
-             FROM classes
-             WHERE annee_debut = ?
-             ORDER BY enseignant ASC'
-        );
-        $stmt->execute([$anneeDebut]);
-
-        return $stmt->fetchAll();
-    }
-
-    public static function listeAnnees(PDO $pdo): array
-    {
-        $stmt = $pdo->query('SELECT DISTINCT annee_debut FROM classes ORDER BY annee_debut DESC');
-
-        return array_map('intval', $stmt->fetchAll(PDO::FETCH_COLUMN));
     }
 
     public static function listeEnseignants(PDO $pdo): array

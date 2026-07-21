@@ -7,6 +7,7 @@ use App\Config\Database;
 use App\Repository\ClasseRepository;
 use App\Repository\EleveRepository;
 use App\Support\Csrf;
+use App\View\Layout;
 
 require __DIR__ . '/../../../config/bootstrap.php';
 
@@ -53,27 +54,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }
+Layout::debut(($id !== null ? 'Modifier' : 'Nouvel') . ' élève — Administration', ['admin' => true, 'adminNav' => 'students']);
 ?>
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= $id !== null ? 'Modifier' : 'Nouvel' ?> élève — Administration</title>
-    <link rel="stylesheet" href="/assets/style.css">
-</head>
-<body>
 <a class="retour" href="/admin/eleves/index.php?classe_id=<?= $classeId ?>">&larr; Élèves</a>
-<h1><?= $id !== null ? 'Modifier l\'élève' : 'Nouvel élève' ?></h1>
-<p>Classe : <?= htmlspecialchars($classe['enseignant']) ?> (<?= (int) $classe['annee_debut'] ?>/<?= (int) $classe['annee_debut'] + 1 ?>)</p>
+<h3 style="margin-bottom:2px"><?= $id !== null ? "Modifier l'élève" : 'Nouvel élève' ?></h3>
+<p class="hint">Classe : <?= htmlspecialchars($classe['enseignant']) ?> (<?= (int) $classe['annee_debut'] ?>/<?= (int) $classe['annee_debut'] + 1 ?>)</p>
 <?php foreach ($erreurs as $erreur): ?>
     <p class="erreur"><?= htmlspecialchars($erreur) ?></p>
 <?php endforeach; ?>
-<form method="post">
+<form method="post" style="max-width:340px">
     <?= Csrf::champHtml() ?>
-    <label for="prenom">Prénom</label>
-    <input type="text" id="prenom" name="prenom" value="<?= htmlspecialchars($prenom) ?>" required autofocus>
-    <button type="submit" class="bouton-large">Enregistrer</button>
+    <div class="field">
+        <label for="prenom">Prénom</label>
+        <input type="text" id="prenom" name="prenom" value="<?= htmlspecialchars($prenom) ?>" required autofocus>
+    </div>
+    <button type="submit" class="btn-block">Enregistrer</button>
 </form>
-</body>
-</html>
+<?php Layout::fin(); ?>

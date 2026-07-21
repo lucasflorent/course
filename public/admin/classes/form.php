@@ -7,6 +7,7 @@ use App\Config\Database;
 use App\Repository\ClasseRepository;
 use App\Support\AnneeScolaire;
 use App\Support\Csrf;
+use App\View\Layout;
 
 require __DIR__ . '/../../../config/bootstrap.php';
 
@@ -60,41 +61,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $enseignants = ClasseRepository::listeEnseignants($pdo);
+Layout::debut(($id !== null ? 'Modifier' : 'Nouvelle') . ' classe — Administration', ['admin' => true, 'adminNav' => 'teachers']);
 ?>
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= $id !== null ? 'Modifier' : 'Nouvelle' ?> classe — Administration</title>
-    <link rel="stylesheet" href="/assets/style.css">
-</head>
-<body>
 <a class="retour" href="/admin/classes/index.php">&larr; Classes</a>
-<h1><?= $id !== null ? 'Modifier la classe' : 'Nouvelle classe' ?></h1>
+<h3><?= $id !== null ? 'Modifier la classe' : 'Nouvelle classe' ?></h3>
 <?php foreach ($erreurs as $erreur): ?>
     <p class="erreur"><?= htmlspecialchars($erreur) ?></p>
 <?php endforeach; ?>
-<form method="post">
+<form method="post" style="max-width:380px">
     <?= Csrf::champHtml() ?>
-    <label for="enseignant">Enseignant</label>
-    <input type="text" id="enseignant" name="enseignant" list="liste-enseignants"
-           value="<?= htmlspecialchars($valeurs['enseignant']) ?>" required autofocus>
-    <datalist id="liste-enseignants">
-        <?php foreach ($enseignants as $nom): ?>
-            <option value="<?= htmlspecialchars($nom) ?>">
-        <?php endforeach; ?>
-    </datalist>
+    <div class="field">
+        <label for="enseignant">Enseignant</label>
+        <input type="text" id="enseignant" name="enseignant" list="liste-enseignants"
+               value="<?= htmlspecialchars($valeurs['enseignant']) ?>" required autofocus>
+        <datalist id="liste-enseignants">
+            <?php foreach ($enseignants as $nom): ?>
+                <option value="<?= htmlspecialchars($nom) ?>">
+            <?php endforeach; ?>
+        </datalist>
+    </div>
 
-    <label for="annee_debut">Année scolaire (année de début, ex. 2025 pour 2025/2026)</label>
-    <input type="number" id="annee_debut" name="annee_debut" min="2000" max="2100"
-           value="<?= htmlspecialchars((string) $valeurs['annee_debut']) ?>" required>
+    <div class="field">
+        <label for="annee_debut">Année scolaire (année de début, ex. 2025 pour 2025/2026)</label>
+        <input type="number" id="annee_debut" name="annee_debut" min="2000" max="2100"
+               value="<?= htmlspecialchars((string) $valeurs['annee_debut']) ?>" required>
+    </div>
 
-    <label for="libelle_classe">Libellé (optionnel)</label>
-    <input type="text" id="libelle_classe" name="libelle_classe" placeholder="ex. CM2 A"
-           value="<?= htmlspecialchars($valeurs['libelle_classe']) ?>">
+    <div class="field">
+        <label for="libelle_classe">Libellé (optionnel)</label>
+        <input type="text" id="libelle_classe" name="libelle_classe" placeholder="ex. CM2 A"
+               value="<?= htmlspecialchars($valeurs['libelle_classe']) ?>">
+    </div>
 
-    <button type="submit" class="bouton-large">Enregistrer</button>
+    <button type="submit" class="btn-block">Enregistrer</button>
 </form>
-</body>
-</html>
+<?php Layout::fin(); ?>

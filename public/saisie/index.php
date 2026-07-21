@@ -34,7 +34,7 @@ if (isset($_GET['classe_id'])) {
             break;
         }
     }
-    $classeIdSelectionnee ??= $classes[0]['id'] ?? null;
+    $classeIdSelectionnee ??= isset($classes[0]['id']) ? (int) $classes[0]['id'] : null;
 }
 
 if ($classeIdSelectionnee !== null && !in_array($classeIdSelectionnee, $idsClasses, true)) {

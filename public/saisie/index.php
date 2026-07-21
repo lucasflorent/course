@@ -17,7 +17,7 @@ SiteAuth::requireAuth();
 
 $pdo = Database::pdo();
 $classes = ClasseRepository::findAll($pdo);
-$idsClasses = array_column($classes, 'id');
+$idsClasses = array_map('intval', array_column($classes, 'id'));
 
 $cookie = PrefillCookie::get();
 $classeIdCookie = isset($cookie['classe_id']) ? (int) $cookie['classe_id'] : null;

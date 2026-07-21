@@ -18,7 +18,7 @@ SiteAuth::requireAuth();
 
 $pdo = Database::pdo();
 $classes = ClasseRepository::findAll($pdo);
-$idsClasses = array_column($classes, 'id');
+$idsClasses = array_map('intval', array_column($classes, 'id'));
 
 $cookie = PrefillCookie::get();
 $classeIdCookie = isset($cookie['classe_id']) ? (int) $cookie['classe_id'] : null;
@@ -35,7 +35,7 @@ if (isset($_GET['classe_id'])) {
             break;
         }
     }
-    $classeId ??= $classes[0]['id'] ?? null;
+    $classeId ??= isset($classes[0]['id']) ? (int) $classes[0]['id'] : null;
 }
 
 if ($classeId !== null && !in_array($classeId, $idsClasses, true)) {

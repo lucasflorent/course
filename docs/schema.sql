@@ -76,13 +76,15 @@ CREATE TABLE temps_passage (
 -- Requête de référence : dérivation du n° de tour, de la durée de tour et
 -- du flag "tour incertain" (incertain si l'un des 2 temps qui le délimitent
 -- est marqué incertain) — à utiliser pour construire le graphique.
+-- Le premier tour est chronométré depuis le départ (temps_precedent = 0,
+-- implicite, jamais stocké) : N temps de passage saisis donnent N tours.
 -- =====================================================================
 -- WITH tours AS (
 --     SELECT
 --         temps_cumule_s,
 --         incertain,
---         LAG(temps_cumule_s) OVER (ORDER BY temps_cumule_s) AS temps_precedent,
---         LAG(incertain)      OVER (ORDER BY temps_cumule_s) AS precedent_incertain
+--         COALESCE(LAG(temps_cumule_s) OVER (ORDER BY temps_cumule_s), 0) AS temps_precedent,
+--         COALESCE(LAG(incertain)      OVER (ORDER BY temps_cumule_s), FALSE) AS precedent_incertain
 --     FROM temps_passage
 --     WHERE seance_id = ?
 -- )
@@ -91,7 +93,6 @@ CREATE TABLE temps_passage (
 --     temps_cumule_s - temps_precedent AS duree_tour_s,
 --     (incertain OR precedent_incertain) AS tour_incertain
 -- FROM tours
--- WHERE temps_precedent IS NOT NULL
 -- ORDER BY temps_cumule_s;
 
 -- =====================================================================

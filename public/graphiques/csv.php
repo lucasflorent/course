@@ -51,7 +51,7 @@ foreach ($retenues as $ligne) {
     $tours = TourDerivation::deriver($tempsListe);
 
     foreach ($tempsListe as $i => $t) {
-        $numeroTour = $i === 0 ? '' : (string) $tours[$i - 1]['numero_tour'];
+        $numeroTour = (string) $tours[$i]['numero_tour'];
         fputcsv($out, [
             $ligne['prenom'],
             $libelleClasse,

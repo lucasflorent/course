@@ -18,18 +18,16 @@ final class TourDerivation
     public static function deriver(array $tempsTries): array
     {
         $tours = [];
-        $precedent = null;
+        $precedent = ['temps_cumule_s' => 0, 'incertain' => false];
         $numero = 0;
 
         foreach ($tempsTries as $temps) {
-            if ($precedent !== null) {
-                $numero++;
-                $tours[] = [
-                    'numero_tour' => $numero,
-                    'duree_tour_s' => (int) $temps['temps_cumule_s'] - (int) $precedent['temps_cumule_s'],
-                    'incertain' => (bool) $temps['incertain'] || (bool) $precedent['incertain'],
-                ];
-            }
+            $numero++;
+            $tours[] = [
+                'numero_tour' => $numero,
+                'duree_tour_s' => (int) $temps['temps_cumule_s'] - (int) $precedent['temps_cumule_s'],
+                'incertain' => (bool) $temps['incertain'] || (bool) $precedent['incertain'],
+            ];
             $precedent = $temps;
         }
 

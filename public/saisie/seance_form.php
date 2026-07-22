@@ -226,7 +226,7 @@ Layout::debut(($id !== null ? 'Modifier' : 'Nouvelle') . ' séance — ' . $elev
     <div class="section-lbl" style="margin-top:16px">Temps enregistrés</div>
     <div class="laplist">
         <?php foreach ($temps as $i => $t): ?>
-            <?php $tour = $i > 0 ? $tours[$i - 1] : null; ?>
+            <?php $tour = $tours[$i] ?? null; ?>
             <div class="laprow">
                 <span class="lapn">Temps n° <?= $i + 1 ?></span>
                 <span class="lapt"><?= htmlspecialchars(Temps::format((int) $t['temps_cumule_s'])) ?></span>

@@ -1,0 +1,22 @@
+name: Déploiement O2switch
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: git pull sur O2switch
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: tgao5227.odns.fr
+          username: tgao5227
+          port: 22
+          key: ${{ secrets.O2SWITCH_DEPLOY_KEY }}
+          script: |
+            set -e
+            cd /home/tgao5227/course.lucas.lt/app
+            git pull origin main

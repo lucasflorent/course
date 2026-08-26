@@ -6,6 +6,7 @@ use App\Auth\SiteAuth;
 use App\Config\Database;
 use App\Repository\EleveRepository;
 use App\Repository\SeanceRepository;
+use App\Support\Icone;
 use App\Support\Temps;
 use App\View\Layout;
 
@@ -54,7 +55,10 @@ Layout::debut($eleve['prenom'] . ' — Course de fond CM2', ['eleveId' => $eleve
                 <td><?= htmlspecialchars((new DateTimeImmutable($seance['date_seance']))->format('d-m-Y')) ?></td>
                 <td><?= $seance['longueur_tour_m'] !== null ? htmlspecialchars((string) $seance['longueur_tour_m']) . ' m' : '—' ?></td>
                 <td><?= (int) $seance['nb_temps'] ?></td>
-                <td><a class="btn btn-secondary" href="/saisie/seance_form.php?id=<?= (int) $seance['id'] ?>">Modifier</a></td>
+                <td class="actions">
+                    <a class="btn btn-secondary" href="/saisie/seance_form.php?id=<?= (int) $seance['id'] ?>">Modifier</a>
+                    <a class="btn btn-danger" href="/saisie/seance_supprimer.php?id=<?= (int) $seance['id'] ?>" title="Supprimer cette séance"><?= Icone::svg('trash') ?></a>
+                </td>
             </tr>
         <?php endforeach; ?>
         </tbody>
